@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// A class for displaying a card in the game
 public class CardDisplay : MonoBehaviour
 {
-
-	private static Dictionary<string, Sprite> cachedSprites = new Dictionary<string, Sprite>();
 
 	
 	[SerializeField]
@@ -28,19 +28,6 @@ public class CardDisplay : MonoBehaviour
 		}
 	}
 
-
-	// Called to initialize the display; must be called before the object can be used
-	public void Init(){
-		if(suitNames == null){
-			suitNames = new Dictionary<Suit, string>();
-			suitNames.Add(Suit.CLUBS, clubsName);
-			suitNames.Add(Suit.DIAMONDS, diamondsName);
-			suitNames.Add(Suit.HEARTS, heartsName);
-			suitNames.Add(Suit.SPADES, spadesName);
-		}
-	}
-
-
 	private Card card;
 	public Card Card {
 		get{
@@ -55,17 +42,23 @@ public class CardDisplay : MonoBehaviour
 	}
 
 
+	// Called to initialize the display; must be called before the object can be used
+	public void Init() {
+		if(suitNames == null){
+			suitNames = new Dictionary<Suit, string>();
+			suitNames.Add(Suit.CLUBS, clubsName);
+			suitNames.Add(Suit.DIAMONDS, diamondsName);
+			suitNames.Add(Suit.HEARTS, heartsName);
+			suitNames.Add(Suit.SPADES, spadesName);
+		}
+	}
+
+
 	// Loads and displays the appropriate sprite (based on fileNameFormat)
 	// 		...for the given card
-	private Sprite loadSprite(Card card){
+	private Sprite loadSprite(Card card) {
 		string fileName = String.Format(fileNameFormat, suitNames[card.Suit], card.Rank);
-		Sprite sprite;
-		if(cachedSprites.ContainsKey(fileName)){
-			sprite = cachedSprites[fileName];
-		}else{
-			sprite = Resources.Load<Sprite>(fileName) as Sprite;
-			cachedSprites[fileName] = sprite;
-		}
+		Sprite sprite = Resources.Load<Sprite>(fileName) as Sprite;
 		return sprite;
 	}
 

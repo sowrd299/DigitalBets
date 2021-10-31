@@ -891,7 +891,7 @@ GameObject:
   - component: {fileID: 1355236529}
   - component: {fileID: 1355236528}
   m_Layer: 0
-  m_Name: Card Positions
+  m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -906,10 +906,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1355236527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7daba220864e2347f8dbcd986d79d735, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dce393b1e63f74cbb021a449d21b797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardObject: {fileID: 5013343126223769027, guid: fb7839c58cb6bc713a6646382f4e7b7f, type: 3}
   step: {x: 2, y: 0, z: 0}
+  handSize: 5
 --- !u!4 &1355236529
 Transform:
   m_ObjectHideFlags: 0
@@ -1197,9 +1199,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8393495d138f38bb106496bb1ada56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardObject: {fileID: 5013343126223769027, guid: fb7839c58cb6bc713a6646382f4e7b7f, type: 3}
-  handSize: 5
-  handPositions: {fileID: 1355236528}
+  hand: {fileID: 1355236528}
+  deck: {fileID: 1961747639}
+  moneyManager: {fileID: 1961747642}
+  payoutManager: {fileID: 1961747643}
+  uiManager: {fileID: 1961747641}
 --- !u!4 &1961747638
 Transform:
   m_ObjectHideFlags: 0
@@ -1390,7 +1394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46106d0c099d919092dad2a4c981a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonObject: {fileID: 4451351070061040409, guid: 8e71ff9f48008fe9998212426095fb85, type: 3}
+  button: {fileID: 4451351070061040409, guid: 8e71ff9f48008fe9998212426095fb85, type: 3}
   gameManager: {fileID: 1961747637}
   firstPos: {x: 0, y: 50, z: 0}
   step: {x: 0, y: -50, z: 0}

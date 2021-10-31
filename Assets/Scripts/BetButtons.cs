@@ -9,7 +9,7 @@ public class BetButtons : MonoBehaviour
 {
 
 	[SerializeField]
-	private GameObject buttonObject;
+	private GameObject button;
 
 	[SerializeField]
 	private GameManager gameManager;
@@ -27,12 +27,12 @@ public class BetButtons : MonoBehaviour
     void Start()
     {
 		for(int i = 0; i < betAmounts.Length; i++) {
-			GameObject button = Instantiate(buttonObject);
-			button.transform.SetParent(transform);
-			button.transform.position = transform.position + firstPos + step * i;
-			button.GetComponentInChildren<Text>().text = betAmounts[i].ToString();
+			GameObject newButton = Instantiate(button);
+			newButton.transform.SetParent(transform);
+			newButton.transform.position = transform.position + firstPos + step * i;
+			newButton.GetComponentInChildren<Text>().text = betAmounts[i].ToString();
 			int j = i; // Create an appropriately scoped copy
-			button.GetComponent<Button>().onClick.AddListener(() => { 
+			newButton.GetComponent<Button>().onClick.AddListener(() => { 
 				gameManager.PlaceBet(betAmounts[j]);
 			});
 		}

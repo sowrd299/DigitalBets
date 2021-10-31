@@ -17,13 +17,13 @@ public class Deck : MonoBehaviour
 
 
 	// initializes the object
-	public void init(){
+	public void Init(){
 		cards = makeCards();
 	}
 
 
 	// returns list of the cards for this object
-	private List<Card> makeCards(){
+	private List<Card> makeCards() {
 		var suits = Enum.GetValues(typeof(Suit));
 		List<Card> newCards = new List<Card>(suits.Length * maxRank-minRank);
 		foreach(Suit suit in suits){
@@ -36,7 +36,7 @@ public class Deck : MonoBehaviour
 
 
 	// shuffles all cards not yet drawn from the deck
-	public void shuffleRemaining(){
+	public void shuffleRemaining() {
 		for(int i = nextCard; i < cards.Count; i++){
 			int r = UnityEngine.Random.Range(i, cards.Count);
 			Card swap = cards[i];
@@ -47,12 +47,13 @@ public class Deck : MonoBehaviour
 
 
 	// re-adds all cards to the deck and shuffles them
-	public void shuffleAll(){
+	public void shuffleAll() {
 		nextCard = 0;
 		shuffleRemaining();
 	}
 
 
+	// Pops a card off the deck
 	public Card DrawCard(){
 		Card card = cards[nextCard];
 		nextCard++;

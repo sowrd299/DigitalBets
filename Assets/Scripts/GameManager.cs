@@ -4,132 +4,87 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	
-	[SerializeField]
-	private GameObject cardObject;
+
 
 
 	[SerializeField]
-	private int handSize = 5;
+	private HandManager hand;
 
 	[SerializeField]
-	private CardPositions handPositions;
-
-
-	private List<GameObject> hand;
 	private Deck deck;
+
+	[SerializeField]
 	private MoneyManager moneyManager;
+
+	[SerializeField]
 	private PayoutManager payoutManager;
+
+	[SerializeField]
 	private UiManager uiManager;
 
 
     // Start is called before the first frame update
-    void Start()
-    {
-		deck = GetComponent<Deck>();
-		deck.init();
-		moneyManager = GetComponent<MoneyManager>();
-		payoutManager = GetComponent<PayoutManager>();
-		uiManager = GetComponent<UiManager>();
-		makeHand();
-		NextRound();
+    void Start() {
+		hand.Init();
+		deck.Init();
+		StartRound();
     }
 
-
-	private void makeHand() {
-		hand = new List<GameObject>(handSize);
-		for(int i = 0; i < handSize; i++){
-			GameObject card = makeCard();
-			hand.Add(card);
-			if(handPositions != null){
-				card.transform.position = handPositions.GetPosition(i);
-			}
-		}
-	}
-
-	
-	private GameObject makeCard(){
-		GameObject card = Instantiate(cardObject);
-		CardDisplay disp = card.GetComponent<CardDisplay>();
-		if(disp != null) {
-			disp.Init();
-		}
-		return card;
-	}
-
-
-	// Begins a new hand
-	private void setupRound() {
-		deck.shuffleAll();
-		foreach(GameObject card in hand){
-			drawCard(card);
-			HoldToggle hold = card.GetComponent<HoldToggle>();
-			if(hold != null){
-				hold.Togglable = true;
-			}
-		}
-	}
-
-
-	private void drawCard(GameObject cardObject){
-		CardDisplay disp = cardObject.GetComponent<CardDisplay>();
-		if(disp != null) {
-			disp.Card = deck.DrawCard();
-		}
-	}
-
-
-
-
-    // Update is called once per frame
     void Update()
     {
 		GetComponent<ClickManager>().ManageClicks();
     }
 
 	// GAME LOOP METHODS
+	// The bellow methods are called to advance the game loop
 
+
+	// FINALIZES HOLDING CARDS FOR THIS ROUND
 	public void ConfirmHold(){
 		redrawHand();
-		RoundResult result = payoutManager.GetRoundResult(getHandAsCardList());
+		RoundResult result = payoutManager.GetRoundResult(hand.GetCardsAsCardList());
 		moneyManager.Payout(result.Payout);
 		uiManager.ShowEndOfRoundUi();
 		uiManager.SplashText(result.Name);
 	}
 
-	private void redrawHand(){
-		foreach(GameObject card in hand){
-			HoldToggle hold = card.GetComponent<HoldToggle>();
+
+	// Redraws cards toggled to be redrawn
+	public void redrawHand() {
+		foreach(GameObject cardObject in hand.CardObjects){
+			HoldToggle hold = cardObject.GetComponent<HoldToggle>();
 			if(hold != null){
 				if(hold.Redraw){
-					drawCard(card);
+					hand.DrawCard(cardObject, deck.DrawCard());
 				}
 				hold.Redraw = false;
-				hold.Togglable = false;
 			}
 		}
+		hand.SetToggle(false);
 	}
 
-	private List<Card> getHandAsCardList(){
-		List<Card> cards = new List<Card>(hand.Count);
-		foreach(GameObject cardObject in hand){
-			Card c = cardObject.GetComponent<CardDisplay>()?.Card;
-			if(c != null){
-				cards.Add(c);
-			}
-		}
-		return cards;
-	}
 
-	public void NextRound(){
+	// BEGINS A NEW ROUND
+	public void StartRound(){
 		uiManager.ShowBetUi();
 	}
 
 
-	public void PlaceBet(int amount){
+	// FINALIZES BETS FOR THE CURRENT ROUND
+	public void PlaceBet(int amount) {
 		setupRound();
 		moneyManager.PlaceBet(amount);
 		uiManager.ShowHoldUi();
+	}
+
+
+	// Sets up cards for a new round
+	private void setupRound() {
+		deck.shuffleAll();
+		foreach(GameObject cardObject in hand.CardObjects){
+			hand.DrawCard(cardObject, deck.DrawCard());
+		}
+		hand.SetToggle(true);
 	}
 	
 
