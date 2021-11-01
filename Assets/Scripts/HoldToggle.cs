@@ -17,15 +17,7 @@ public class HoldToggle : MonoBehaviour, IClickHandler
 			return redraw;
 		}
 		set {
-			SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-			if(sprite != null){
-				if(value){
-					oldColor = sprite.color;
-					sprite.color = highlightColor;
-				}else if (Redraw) {
-					sprite.color = oldColor;
-				}
-			}
+			updateColor(value);
 			redraw = value;
 		}
 	}
@@ -39,6 +31,18 @@ public class HoldToggle : MonoBehaviour, IClickHandler
 	public void HandleClickedOn(){
 		if(Togglable){
 			Redraw = !Redraw;
+		}
+	}
+
+	private void updateColor(bool highlight){
+		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+		if(sprite != null){
+			if(highlight){
+				oldColor = sprite.color;
+				sprite.color = highlightColor;
+			}else if (Redraw) {
+				sprite.color = oldColor;
+			}
 		}
 	}
 

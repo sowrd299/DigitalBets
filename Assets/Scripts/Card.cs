@@ -32,4 +32,9 @@ public struct Card {
 		return (this as Card?) == (obj as Card?);
 	}
 
+	public override int GetHashCode()
+	{
+		return (Suit, Rank).GetHashCode();
+	}
+
 }

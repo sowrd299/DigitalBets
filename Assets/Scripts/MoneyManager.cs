@@ -40,7 +40,7 @@ public class MoneyManager : MonoBehaviour
 		Bet = bet;
 	}
 
-	public void Payout(float factor){
+	public void Payout(float factor) {
 		Money += (int)Mathf.Floor(Bet * factor);
 	}
 

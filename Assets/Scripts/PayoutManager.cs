@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class RoundResult {
+public struct RoundResult {
 	public string Name {
 		get; private set;
 	}
 
-	public float Payout{
+	public float Payout {
 		get; private set;
 	}
 
@@ -105,7 +105,7 @@ public class PayoutManager : MonoBehaviour
 			return new RoundResult(StraightName, StraightPayout);
 		}else if(setsOfSize[3] > 0){
 			return new RoundResult(ThreeKindName, ThreeKindPayout);
-		}else if(setsOfSize[2] > 2){
+		}else if(setsOfSize[2] >= 2){
 			return new RoundResult(TwoPairName, TwoPairPayout);
 		}else if(setsOfSize[2] > 0){
 			for(int i = 10; i < rankCounts.Length; i++){
